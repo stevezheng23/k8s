@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-classifier-deployment
+  labels:
+    app: text-classifier
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: text-classifier
+  template:
+    metadata:
+      labels:
+        app: text-classifier
+    spec:
+      containers:
+      - name: text-classifier
+        image: xiaomingaml.azurecr.io/stevezheng/tritonserver:21.10-py3-pt-transformers.ea2bf8d7896fe062e160d2e6f230423cad30ff38.1837518977
+        args: ["tritonserver --model-repository=/model_repository"]
+        ports:
+        - name: http-triton
+          containerPort: 8000
+        - name: grpc-triton
+          containerPort: 8001
+        - name: metric-triton
+          containerPort: 8002
+        resources:
+          limits:
+            nvidia.com/mig-1g.5gb: 1
