@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: text-classifier
-        image: xiaomingaml.azurecr.io/stevezheng/tritonserver:21.10-py3-pt-transformers.ea2bf8d7896fe062e160d2e6f230423cad30ff38.1837518977
+        image: stevezheng23/tritonserver:21.10-py3-pt-transformers.ea2bf8d7896fe062e160d2e6f230423cad30ff38.1837518977
         args: ["tritonserver --model-repository=/model_repository"]
         ports:
         - name: http-triton
