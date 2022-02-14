@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mongo-deployment
+  name: mongodb-deployment
+  namespace: mongo-example
   labels:
-    app: mongo
+    app: mongodb
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: mongo
+      app: mongodb
   template:
     metadata:
+      namespace: mongo-example
       labels:
-        app: mongo
+        app: mongodb
     spec:
       containers:
-      - name: mongo
+      - name: mongodb
         image: mongo:5.0
         ports:
         - containerPort: 27017
@@ -23,13 +25,13 @@ spec:
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
-              name: mongo-secret
-              key: mongo-user 
+              name: mongodb-secret
+              key: mongodb-user 
         - name: MONGO_INITDB_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: mongo-secret
-              key: mongo-password
+              name: mongodb-secret
+              key: mongodb-password
         resources:
           limits:
             memory: 512Mi
@@ -41,11 +43,12 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: mongo-service
+  name: mongodb-service
+  namespace: mongo-example
 spec:
   selector:
-    app: mongo
+    app: mongodb
   ports:
     - protocol: TCP
-      port: 80
+      port: 27017
       targetPort: 27017
