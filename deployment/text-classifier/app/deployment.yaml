@@ -14,6 +14,11 @@ spec:
       labels:
         app: text-classifier
     spec:
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 128Mi
       containers:
       - name: text-classifier
         image: stevezheng23/tritonserver:21.10-py3-pt-transformers.ea2bf8d7896fe062e160d2e6f230423cad30ff38.1837518977
@@ -28,10 +33,13 @@ spec:
           name: grpc
         - containerPort: 8002
           name: metrics
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
         resources:
           limits:
-            memory: 1Gi
-            cpu: "2"
+            memory: 2Gi
+            cpu: "1"
           requests:
             memory: 512Mi
-            cpu: "1"
+            cpu: "0.25"
