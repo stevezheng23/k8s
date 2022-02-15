@@ -21,7 +21,7 @@ spec:
           sizeLimit: 128Mi
       containers:
       - name: text-classifier
-        image: stevezheng23/tritonserver:21.10-py3-pt-transformers.ea2bf8d7896fe062e160d2e6f230423cad30ff38.1837518977
+        image: xiaomingaml.azurecr.io/stevezheng/tritonserver:21.10-py3-pt-transformers.ea2bf8d7896fe062e160d2e6f230423cad30ff38.1837518977
         args: [
           "tritonserver",
           "--model-repository=/model_repository"
@@ -43,3 +43,5 @@ spec:
           requests:
             memory: 512Mi
             cpu: "0.25"
+      imagePullSecrets:
+        - name: text-classifier-acr-secret
