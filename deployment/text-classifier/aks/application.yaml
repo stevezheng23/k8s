@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/stevezheng23/k8s.git
     targetRevision: HEAD
-    path: deployment/text-classifier/app
+    path: deployment/text-classifier/aks/app
   destination:
     server: https://kubernetes.default.svc
     namespace: text-classifier
