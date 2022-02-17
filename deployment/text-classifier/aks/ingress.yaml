@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: text-classifier
+  namespace: text-classifier
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: text-classifier.<CLUSTER_SPECIFIC_DNS_ZONE>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: text-classifier-service
+            port:
+              number: 8000
