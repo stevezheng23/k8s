@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-retriever-deployment
+  labels:
+    app: text-retriever
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: text-retriever
+  template:
+    metadata:
+      labels:
+        app: text-retriever
+    spec:
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 128Mi
+      containers:
+      - name: text-retriever
+        image: xiaomingaml.azurecr.io/stevezheng23/tritonserver:21.10-py3-retriever-clinc150.48721380974e1305577bb17a5a583da8a9de2160.1911857150
+        args: [
+          "tritonserver",
+          "--model-repository=/model_repository"
+        ]
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 8001
+          name: grpc
+        - containerPort: 8002
+          name: metrics
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.25"
+      imagePullSecrets:
+        - name: text-retriever-acr-secret
