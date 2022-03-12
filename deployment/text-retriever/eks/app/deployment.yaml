@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: text-retriever-deployment
+  labels:
+    app: text-retriever
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: text-retriever
+  template:
+    metadata:
+      labels:
+        app: text-retriever
+    spec:
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 128Mi
+      containers:
+      - name: text-retriever
+        image: 776427377677.dkr.ecr.us-west-2.amazonaws.com/stevezheng23/tritonserver:21.10-py3-retriever-clinc150.70a26b22ef7f6d12387b49435d1520452f20d72a.1911808176
+        args: [
+          "tritonserver",
+          "--model-repository=/model_repository"
+        ]
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 8001
+          name: grpc
+        - containerPort: 8002
+          name: metrics
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.25"
+      imagePullSecrets:
+        - name: text-retriever-ecr-secret
