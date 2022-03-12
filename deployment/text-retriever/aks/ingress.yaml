@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: text-retriever
+  namespace: text-retriever
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+  - host: text-retriever.<CLUSTER_SPECIFIC_DNS_ZONE>
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: text-retriever-service
+            port:
+              number: 8000
