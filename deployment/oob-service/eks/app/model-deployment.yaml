@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oob-nlp-model-deployment
+  labels:
+    app: oob-nlp-model
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: oob-nlp-model
+  template:
+    metadata:
+      labels:
+        app: oob-nlp-model
+    spec:
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 128Mi
+      containers:
+      - name: oob-nlp-model
+        image: 776427377677.dkr.ecr.us-west-2.amazonaws.com/stevezheng23/tritonserver:21.10-py3-bert-base-uncased-clinc150-classifier.ec9e0005a544757ffc56f9a484d31970c682a20f.2025732004
+        args: [
+          "tritonserver",
+          "--model-repository=/model_repository"
+        ]
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 8001
+          name: grpc
+        - containerPort: 8002
+          name: metrics
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.25"
+      imagePullSecrets:
+        - name: oob-nlp-ecr-secret

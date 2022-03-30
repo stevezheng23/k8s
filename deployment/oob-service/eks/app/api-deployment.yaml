@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: oob-nlp-api
-        image: xiaomingaml.azurecr.io/stevezheng23/nlpserver:0.0.1-go.1.17-oob
+        image: 776427377677.dkr.ecr.us-west-2.amazonaws.com/stevezheng23/nlpserver:0.0.1-go.1.17-oob
         ports:
         - containerPort: 8080
         env:
@@ -43,4 +43,4 @@ spec:
             memory: 512Mi
             cpu: "0.25"
       imagePullSecrets:
-        - name: oob-nlp-acr-secret
+        - name: oob-nlp-ecr-secret
