@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oob-nlp-api-deployment
+  labels:
+    app: oob-nlp-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: oob-nlp-api
+  template:
+    metadata:
+      labels:
+        app: oob-nlp-api
+    spec:
+      containers:
+      - name: oob-nlp-api
+        image: xiaomingaml.azurecr.io/stevezheng23/nlpserver:0.0.2-go.1.17-oob
+        ports:
+        - containerPort: 8080
+        env:
+        - name: TRITON_SERVER_URL
+          valueFrom:
+            configMapKeyRef:
+              name: oob-nlp-api-config
+              key: model-url
+        - name: TRITON_MODEL_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: oob-nlp-api-config
+              key: model-name
+        - name: TRITON_MODEL_VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: oob-nlp-api-config
+              key: model-version
+        resources:
+          limits:
+            memory: 2Gi
+            cpu: "1"
+          requests:
+            memory: 512Mi
+            cpu: "0.25"
+      imagePullSecrets:
+        - name: oob-nlp-acr-secret
