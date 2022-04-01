@@ -21,7 +21,7 @@ spec:
           sizeLimit: 128Mi
       containers:
       - name: text-classifier
-        image: xiaomingaml.azurecr.io/stevezheng23/tritonserver:21.10-py3-classifier-clinc150.48721380974e1305577bb17a5a583da8a9de2160.1911857149
+        image: xiaomingaml.azurecr.io/stevezheng23/tritonserver:21.10-py3-classifier.ec9e0005a544757ffc56f9a484d31970c682a20f.2025732001
         args: [
           "tritonserver",
           "--model-repository=/model_repository"
