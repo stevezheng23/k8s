@@ -21,7 +21,7 @@ spec:
           sizeLimit: 128Mi
       containers:
       - name: text-classifier
-        image: 776427377677.dkr.ecr.us-west-2.amazonaws.com/stevezheng23/tritonserver:21.10-py3-classifier-clinc150.70a26b22ef7f6d12387b49435d1520452f20d72a.1911808178
+        image: 776427377677.dkr.ecr.us-west-2.amazonaws.com/stevezheng23/tritonserver:21.10-py3-bert-base-uncased-clinc150-classifier.ec9e0005a544757ffc56f9a484d31970c682a20f.2025732004
         args: [
           "tritonserver",
           "--model-repository=/model_repository"
